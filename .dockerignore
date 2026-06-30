@@ -1,0 +1,56 @@
+# === Секреты (не копировать в образ) ===
+.env
+.env.local
+.env.*.local
+
+# === Git и система контроля версий ===
+.git/
+.gitignore
+.gitattributes
+
+# === Виртуальное окружение и кэш Python ===
+venv/
+env/
+ENV/
+.venv
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+*.log
+pip-log.txt
+.tox
+.coverage
+.coverage.*
+.cache
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# === IDE и редакторы ===
+.vscode/
+.idea/
+*.sln
+*.suo
+*.user
+*.swo
+*.swp
+.DS_Store
+Thumbs.db
+
+# === Документация и временные файлы ===
+*.md
+*.pdf
+*.zip
+*.tar.gz
+README.md
+
+# === Сам Dockerfile и dockerignore (не нужны внутри образа) ===
+Dockerfile
+.dockerignore
