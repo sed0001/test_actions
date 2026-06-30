@@ -97,7 +97,6 @@ docker run -d -p 8000:8000 --name fastapi fastapi-app
 - `.git` и `.github`
 - Python кэш (`__pycache__`, `.pyc`)
 - IDE файлы
-- Документацию
 
 ## 🔄 CI/CD
 
