@@ -115,6 +115,16 @@ async def get_current_date():
         "debug": os.getenv("DEBUG", "false").lower() == "true"
     }
 
+@app.get("/datetime")
+async def get_datetime():
+    """Получить текущую дату и время в ISO формате."""
+    return {
+        "app_name": "Test FastAPI Application",
+        "version": VERSION,
+        "current_datetime": datetime.now().isoformat(),
+        "debug": os.getenv("DEBUG", "false").lower() == "true"
+    }
+
 # === Запуск приложения ===
 # Для запуска через Docker используется CMD в Dockerfile
 # Для локального запуска: uvicorn main:app --reload
