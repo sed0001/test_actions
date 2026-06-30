@@ -49,7 +49,6 @@ Thumbs.db
 *.pdf
 *.zip
 *.tar.gz
-README.md
 
 # === Сам Dockerfile и dockerignore (не нужны внутри образа) ===
 Dockerfile

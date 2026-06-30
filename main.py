@@ -4,7 +4,7 @@
 import os
 from dotenv import load_dotenv
 from datetime import datetime
-from typing import List, Optional
+from typing import Optional
 
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
@@ -26,15 +26,17 @@ class Item(BaseModel):
     description: Optional[str] = None
 
 # === In-memory хранилище ===
-items_db: List[Item] = [
+items_db: list[dict] = [
     {"id": 1, "name": "Item 1", "description": "Description 1"},
     {"id": 2, "name": "Item 2", "description": "Description 2"},
 ]
 
 # === Создание приложения ===
+VERSION = "1.0.2"
+
 app = FastAPI(
     title="Test FastAPI Application",
-    version="1.0.2",
+    version=VERSION,
     description="Тестовое приложение для демонстрации работы FastAPI и Docker"
 )
 
@@ -47,12 +49,12 @@ async def root():
 
 @app.get("/health")
 async def health_check():
-    """Проверка работоспособности. изменение2"""
+    """Проверка работоспособности."""
     return {"status": "ok"}
 
 # ===== CRUD для items =====
 
-@app.get("/items", response_model=List[Item])
+@app.get("/items", response_model=list[Item])
 async def get_items():
     """Получить список всех элементов."""
     return items_db
@@ -61,8 +63,8 @@ async def get_items():
 async def create_item(item: ItemCreate):
     """Создать новый элемент."""
     new_id = max((i["id"] for i in items_db), default=0) + 1
-    new_item = Item(id=new_id, **item.dict())
-    items_db.append(new_item.dict())
+    new_item = Item(id=new_id, **item.model_dump())
+    items_db.append(new_item.model_dump())
     return new_item
 
 @app.get("/items/{item_id}", response_model=Item)
@@ -78,7 +80,7 @@ async def update_item(item_id: int, updated_item: ItemCreate):
     """Обновить элемент по ID."""
     for i, item in enumerate(items_db):
         if item["id"] == item_id:
-            items_db[i] = {"id": item_id, **updated_item.dict()}
+            items_db[i] = {"id": item_id, **updated_item.model_dump()}
             return items_db[i]
     raise HTTPException(status_code=404, detail="Элемент не найден")
 
@@ -98,7 +100,7 @@ async def get_info():
     """Получить информацию о приложении."""
     return {
         "app_name": "Test FastAPI Application",
-        "version": "1.0.0",
+        "version": VERSION,
         "environment": os.getenv("ENVIRONMENT", "development"),
         "debug": os.getenv("DEBUG", "false").lower() == "true"
     }
@@ -108,16 +110,11 @@ async def get_current_date():
     """Получить текущую дату."""
     return {
         "app_name": "Test FastAPI Application",
-        "version": "1.0.0",
+        "version": VERSION,
         "current_date": datetime.now().strftime("%Y-%m-%d"),
         "debug": os.getenv("DEBUG", "false").lower() == "true"
     }
 
 # === Запуск приложения ===
-if __name__ == "__main__":
-    uvicorn.run(
-        "main:app",
-        host="0.0.0.0",
-        port=int(os.getenv("PORT", 8000)),
-        reload=os.getenv("DEBUG", "false").lower() == "true"
-    )
+# Для запуска через Docker используется CMD в Dockerfile
+# Для локального запуска: uvicorn main:app --reload

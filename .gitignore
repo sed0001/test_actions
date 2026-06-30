@@ -48,7 +48,6 @@ coverage.xml
 Thumbs.db
 
 # === Другое ===
-*.md
 *.pdf
 *.zip
 *.tar.gz
